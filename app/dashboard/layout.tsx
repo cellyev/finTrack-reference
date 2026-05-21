@@ -17,13 +17,13 @@ export default function DashboardLayout({
     { href: '/dashboard/transactions', label: 'Transactions', icon: '📝' },
     { href: '/dashboard/add', label: 'Add Entry', icon: '➕' },
     { href: '/dashboard/reports', label: 'Reports', icon: '📋' },
-    { href: '/analytics', label: 'Analytics', icon: '📈' },
-    { href: '/budget', label: 'Budget', icon: '💰' },
-    { href: '/goals', label: 'Goals', icon: '🎯' },
-    { href: '/profile', label: 'Profile', icon: '👤' },
-    { href: '/settings', label: 'Settings', icon: '⚙️' },
-    { href: '/notifications', label: 'Notifications', icon: '🔔' },
-    { href: '/help', label: 'Help', icon: '❓' },
+    { href: '/dashboard/analytics', label: 'Analytics', icon: '📈' },
+    { href: '/dashboard/budget', label: 'Budget', icon: '💰' },
+    { href: '/dashboard/goals', label: 'Goals', icon: '🎯' },
+    { href: '/dashboard/profile', label: 'Profile', icon: '👤' },
+    { href: '/dashboard/settings', label: 'Settings', icon: '⚙️' },
+    { href: '/dashboard/notifications', label: 'Notifications', icon: '🔔' },
+    { href: '/dashboard/help', label: 'Help', icon: '❓' },
   ]
 
   return (
