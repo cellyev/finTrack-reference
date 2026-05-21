@@ -1,7 +1,9 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { PieChart, Pie, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts'
+import { Button } from '@/components/ui/button'
+import { PieChart, Pie, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, AreaChart, Area } from 'recharts'
+import { ArrowUp, ArrowDown, TrendingUp } from 'lucide-react'
 
 const categoryData = [
   { name: 'Food', value: 400, fill: '#10b981' },
@@ -29,55 +31,72 @@ const savingsData = [
 
 export default function AnalyticsPage() {
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Analytics</h1>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-4xl font-bold mb-2">Analytics</h1>
+        <p className="text-muted-foreground">Track your spending patterns and financial trends</p>
+      </div>
+
+      {/* Time Period Filter */}
+      <div className="flex gap-2">
+        <Button variant="outline" size="sm">This Month</Button>
+        <Button variant="outline" size="sm">Last 3 Months</Button>
+        <Button variant="outline" size="sm">Last 6 Months</Button>
+        <Button variant="outline" size="sm">This Year</Button>
+      </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border-primary/20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="border-l-4 border-l-primary">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Spent</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center justify-between">
+              Total Spent
+              <ArrowDown className="w-4 h-4 text-green-600" />
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">$1,850</div>
-            <p className="text-xs text-muted-foreground mt-1">This month</p>
+            <p className="text-xs text-muted-foreground mt-1">-2.5% vs last month</p>
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20">
+        <Card className="border-l-4 border-l-accent">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Income</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center justify-between">
+              Total Income
+              <ArrowUp className="w-4 h-4 text-green-600" />
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">$2,500</div>
-            <p className="text-xs text-muted-foreground mt-1">This month</p>
+            <div className="text-3xl font-bold text-accent">$2,500</div>
+            <p className="text-xs text-muted-foreground mt-1">+5% vs last month</p>
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20">
+        <Card className="border-l-4 border-l-green-600">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Net Savings</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-primary">$650</div>
-            <p className="text-xs text-muted-foreground mt-1">This month</p>
+            <div className="text-3xl font-bold text-green-600">$650</div>
+            <p className="text-xs text-muted-foreground mt-1">+12% vs last month</p>
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20">
+        <Card className="border-l-4 border-l-blue-600">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Savings Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">26%</div>
-            <p className="text-xs text-muted-foreground mt-1">Of income saved</p>
+            <div className="text-3xl font-bold text-blue-600">26%</div>
+            <p className="text-xs text-muted-foreground mt-1">Target: 30%</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Charts */}
+      {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border-primary/20">
+        <Card>
           <CardHeader>
             <CardTitle>Spending by Category</CardTitle>
           </CardHeader>
@@ -104,13 +123,19 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20">
+        <Card>
           <CardHeader>
             <CardTitle>Savings Trend</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={savingsData}>
+              <AreaChart data={savingsData}>
+                <defs>
+                  <linearGradient id="colorSavings" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis stroke="var(--muted-foreground)" />
                 <YAxis stroke="var(--muted-foreground)" />
@@ -120,21 +145,22 @@ export default function AnalyticsPage() {
                     border: `1px solid var(--border)`,
                   }}
                 />
-                <Line
+                <Area
                   type="monotone"
                   dataKey="savings"
                   stroke="var(--primary)"
                   strokeWidth={2}
-                  dot={{ fill: 'var(--primary)' }}
+                  fillOpacity={1}
+                  fill="url(#colorSavings)"
                 />
-              </LineChart>
+              </AreaChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
 
       {/* Income vs Expenses */}
-      <Card className="border-primary/20">
+      <Card>
         <CardHeader>
           <CardTitle>Income vs Expenses</CardTitle>
         </CardHeader>
@@ -151,10 +177,34 @@ export default function AnalyticsPage() {
                 }}
               />
               <Legend />
-              <Bar dataKey="income" fill="var(--accent)" />
-              <Bar dataKey="expenses" fill="var(--primary)" />
+              <Bar dataKey="income" fill="var(--accent)" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="expenses" fill="var(--primary)" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* Insights */}
+      <Card className="bg-primary/5 border-primary/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            Financial Insights
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+            <p className="text-sm">Your savings rate is 26%, which is above the average. Keep it up!</p>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+            <p className="text-sm">Food spending increased by $100 compared to last month. Consider meal planning.</p>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+            <p className="text-sm">You&apos;re on track to reach your $3000 emergency fund goal in 5 months.</p>
+          </div>
         </CardContent>
       </Card>
     </div>
