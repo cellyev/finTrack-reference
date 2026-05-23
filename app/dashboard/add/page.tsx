@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 
-const categories = [
+const expenseCategories = [
   { name: 'Food', icon: '🍔' },
   { name: 'Transport', icon: '🚗' },
   { name: 'Entertainment', icon: '🎬' },
@@ -18,10 +18,28 @@ const categories = [
   { name: 'Other', icon: '📦' },
 ]
 
+const incomeCategories = [
+  { name: 'Salary', icon: '💼' },
+  { name: 'Freelance', icon: '💻' },
+  { name: 'Scholarship', icon: '🎓' },
+  { name: 'Bonus', icon: '🎁' },
+  { name: 'Investment', icon: '📈' },
+  { name: 'Gift', icon: '🎉' },
+  { name: 'Refund', icon: '↩️' },
+  { name: 'Other', icon: '📦' },
+]
+
 export default function AddEntryPage() {
   const router = useRouter()
   const [type, setType] = useState<'expense' | 'income'>('expense')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+
+  const categories = type === 'expense' ? expenseCategories : incomeCategories
+
+  const handleTypeChange = (newType: 'expense' | 'income') => {
+    setType(newType)
+    setSelectedCategory(null)
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -39,7 +57,7 @@ export default function AddEntryPage() {
         <CardContent>
           <div className="flex gap-4">
             <button
-              onClick={() => setType('expense')}
+              onClick={() => handleTypeChange('expense')}
               className={`flex-1 p-4 rounded-lg border-2 transition-all ${
                 type === 'expense'
                   ? 'border-primary bg-primary/10'
@@ -50,7 +68,7 @@ export default function AddEntryPage() {
               <p className="font-semibold">Expense</p>
             </button>
             <button
-              onClick={() => setType('income')}
+              onClick={() => handleTypeChange('income')}
               className={`flex-1 p-4 rounded-lg border-2 transition-all ${
                 type === 'income'
                   ? 'border-primary bg-primary/10'
