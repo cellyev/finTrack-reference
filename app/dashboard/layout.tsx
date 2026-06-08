@@ -38,7 +38,7 @@ export default function DashboardLayout({
 
       {/* Sidebar - Hidden on mobile, visible on lg and up */}
       <aside
-        className={`fixed lg:static top-0 left-0 h-screen w-64 bg-sidebar border-r border-sidebar-border transition-transform duration-300 z-50 flex flex-col ${
+        className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-sidebar border-r border-sidebar-border transition-transform duration-300 z-50 flex flex-col ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
