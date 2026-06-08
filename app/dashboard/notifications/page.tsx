@@ -70,13 +70,130 @@ export default function NotificationsPage() {
   const unreadCount = notifications.filter(n => !n.read).length
 
   return (
-    <div className="space-y-8 max-w-3xl">
+    <div className="space-y-4 md:space-y-6 lg:space-y-8 max-w-3xl">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold">Notifications</h1>
-          <p className="text-muted-foreground mt-1">Stay updated with your financial activity</p>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">Notifications</h1>
+          <p className="text-xs md:text-sm text-muted-foreground mt-1">Stay updated with your financial activity</p>
         </div>
+        {unreadCount > 0 && (
+          <div className="bg-primary text-primary-foreground px-2 md:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap">
+            {unreadCount} unread
+          </div>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-1 md:gap-2">
+        <Button variant={activeCategory === 'all' ? 'default' : 'outline'} size="sm" className="text-xs md:text-sm" onClick={() => setActiveCategory('all')}>
+          All
+        </Button>
+        {notificationCategories.map(cat => {
+          const Icon = cat.icon
+          return (
+            <Button
+              key={cat.id}
+              variant={activeCategory === cat.id ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setActiveCategory(cat.id)}
+              className="gap-1 md:gap-2 text-xs md:text-sm"
+            >
+              <Icon className="w-3 md:w-4 h-3 md:h-4" />
+              {cat.label}
+            </Button>
+          )
+        })}
+      </div>
+
+      {/* Filter and Actions */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 bg-secondary/50 p-2 md:p-3 rounded-lg">
+        <div className="flex gap-1 md:gap-2">
+          <Button variant={filter === 'all' ? 'default' : 'ghost'} size="sm" className="text-xs md:text-sm" onClick={() => setFilter('all')}>
+            All
+          </Button>
+          <Button variant={filter === 'unread' ? 'default' : 'ghost'} size="sm" className="text-xs md:text-sm" onClick={() => setFilter('unread')}>
+            Unread
+          </Button>
+          <Button variant={filter === 'read' ? 'default' : 'ghost'} size="sm" className="text-xs md:text-sm" onClick={() => setFilter('read')}>
+            Read
+          </Button>
+        </div>
+        <Button variant="outline" size="sm" className="gap-1 md:gap-2 text-xs md:text-sm">
+          <Check className="w-3 md:w-4 h-3 md:h-4" />
+          Mark all as read
+        </Button>
+      </div>
+
+      {/* Notifications List */}
+      <div className="space-y-2 md:space-y-3">
+        {filteredNotifications.length === 0 ? (
+          <Card className="text-center py-8 md:py-12">
+            <div className="text-3xl md:text-4xl mb-2 md:mb-3">📭</div>
+            <p className="text-xs md:text-sm text-muted-foreground">No notifications to display</p>
+          </Card>
+        ) : (
+          filteredNotifications.map((notification) => {
+            const Icon = notificationCategories.find(c => c.id === notification.category)?.icon || AlertCircle
+            
+            return (
+              <Card
+                key={notification.id}
+                className={`cursor-pointer hover:shadow-md transition-all border-l-4 ${
+                  !notification.read
+                    ? 'border-l-primary bg-primary/5 hover:bg-primary/10'
+                    : 'border-l-border bg-background'
+                }`}
+              >
+                <CardContent className="pt-3 md:pt-4">
+                  <div className="flex items-start gap-2 md:gap-4">
+                    {/* Icon */}
+                    <div className={`w-8 md:w-10 h-8 md:h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                      !notification.read
+                        ? 'bg-primary/20'
+                        : 'bg-secondary/50'
+                    }`}>
+                      <Icon className="w-4 md:w-5 h-4 md:h-5" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className={`font-semibold text-xs md:text-sm ${!notification.read ? 'text-foreground' : 'text-foreground'}`}>
+                            {notification.title}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {notification.message}
+                          </p>
+                        </div>
+                        {!notification.read && (
+                          <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-primary flex-shrink-0 mt-1" />
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2">{notification.time}</p>
+                    </div>
+
+                    {/* Actions */}
+                    <Button variant="ghost" size="sm" className="flex-shrink-0 p-1">
+                      <Archive className="w-3 md:w-4 h-3 md:h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })
+        )}
+      </div>
+
+      {/* Load More */}
+      {filteredNotifications.length > 0 && (
+        <Button variant="outline" className="w-full text-xs md:text-sm">
+          Load older notifications
+        </Button>
+      )}
+    </div>
+  )
         {unreadCount > 0 && (
           <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
             {unreadCount} unread

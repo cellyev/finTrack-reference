@@ -2,15 +2,13 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: '📊' },
@@ -26,60 +24,90 @@ export default function DashboardLayout({
     { href: '/dashboard/help', label: 'Help', icon: '❓' },
   ]
 
+  const bottomNavItems = navItems.slice(0, 5)
+
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
-      <div
-        className={`${
-          sidebarOpen ? 'w-64' : 'w-20'
-        } bg-sidebar border-r border-sidebar-border transition-all duration-300 flex flex-col`}
+    <div className="flex flex-col lg:flex-row min-h-screen bg-background">
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 lg:hidden z-40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Hidden on mobile, visible on lg and up */}
+      <aside
+        className={`fixed lg:static top-0 left-0 h-screen w-64 bg-sidebar border-r border-sidebar-border transition-transform duration-300 z-50 flex flex-col ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
       >
-        <div className="p-4 border-b border-sidebar-border flex items-center justify-between">
-          {sidebarOpen && <h1 className="font-bold text-lg text-sidebar-foreground">FinTrack</h1>}
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 hover:bg-sidebar-accent rounded-lg"
-          >
-            {sidebarOpen ? '←' : '→'}
-          </button>
+        {/* Close button for mobile */}
+        <button
+          onClick={() => setSidebarOpen(false)}
+          className="lg:hidden absolute top-4 right-4 p-2 hover:bg-sidebar-accent/20 rounded-lg text-sidebar-foreground"
+          aria-label="Close sidebar"
+        >
+          ✕
+        </button>
+
+        {/* Logo */}
+        <div className="p-4 md:p-6 border-b border-sidebar-border">
+          <h1 className="text-xl md:text-2xl font-bold text-sidebar-primary">FinTrack</h1>
+          <p className="text-xs md:text-sm text-sidebar-foreground/60">Financial Freedom</p>
         </div>
 
-        <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto p-3 md:p-4 space-y-1 md:space-y-2">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${
-                sidebarOpen
-                  ? 'hover:bg-sidebar-accent'
-                  : 'hover:bg-sidebar-accent justify-center'
-              } text-sidebar-foreground hover:text-sidebar-primary`}
+              onClick={() => setSidebarOpen(false)}
+              className="flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg hover:bg-sidebar-accent/20 transition-colors text-sidebar-foreground hover:text-sidebar-primary text-sm md:text-base"
             >
-              <span className="text-xl">{item.icon}</span>
-              {sidebarOpen && <span className="text-sm font-medium">{item.label}</span>}
+              <span className="text-lg md:text-xl">{item.icon}</span>
+              <span className="font-medium">{item.label}</span>
             </Link>
           ))}
         </nav>
-
-        <div className="p-4 border-t border-sidebar-border">
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => {
-              // Handle logout
-            }}
-          >
-            {sidebarOpen ? 'Logout' : '🚪'}
-          </Button>
-        </div>
-      </div>
+      </aside>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-6">
-          {children}
+      <div className="flex-1 flex flex-col w-full lg:w-auto pb-20 lg:pb-0">
+        {/* Mobile Header */}
+        <div className="lg:hidden flex items-center justify-between p-4 bg-card border-b border-border sticky top-0 z-30">
+          <h1 className="text-lg font-bold text-foreground">FinTrack</h1>
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 hover:bg-muted rounded-lg text-foreground"
+            aria-label="Open sidebar"
+          >
+            ☰
+          </button>
         </div>
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-4 md:py-6">
+          {children}
+        </main>
       </div>
+
+      {/* Bottom Navigation for Mobile */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border flex justify-around z-40">
+        {bottomNavItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={() => setSidebarOpen(false)}
+            className="flex-1 flex flex-col items-center justify-center py-2 px-2 hover:bg-muted transition-colors text-foreground hover:text-primary"
+            aria-label={item.label}
+          >
+            <span className="text-xl md:text-2xl">{item.icon}</span>
+            <span className="text-xs mt-1 text-center line-clamp-1">{item.label.split(' ')[0]}</span>
+          </Link>
+        ))}
+      </nav>
     </div>
   )
 }

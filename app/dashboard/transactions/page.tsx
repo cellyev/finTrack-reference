@@ -14,17 +14,20 @@ const transactions = [
 
 export default function TransactionsPage() {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Transactions</h1>
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <h1 className="text-2xl md:text-3xl font-bold">Transactions</h1>
+        <Button className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90">
           + Add Transaction
         </Button>
       </div>
 
-      <div className="flex gap-4">
-        <Input placeholder="Search transactions..." className="border-primary/20" />
-        <select className="px-4 py-2 rounded-lg border border-primary/20 bg-background">
+      <div className="flex flex-col sm:flex-row gap-2 md:gap-4">
+        <Input 
+          placeholder="Search transactions..." 
+          className="border-primary/20 text-sm md:text-base flex-1" 
+        />
+        <select className="px-3 md:px-4 py-2 text-sm md:text-base rounded-lg border border-primary/20 bg-background min-w-[140px]">
           <option>All Categories</option>
           <option>Food</option>
           <option>Transport</option>
@@ -34,25 +37,25 @@ export default function TransactionsPage() {
 
       <Card className="border-primary/20">
         <CardHeader>
-          <CardTitle>All Transactions</CardTitle>
+          <CardTitle className="text-lg md:text-xl">All Transactions</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2">
+          <div className="space-y-2 md:space-y-3">
             {transactions.map((tx) => (
               <div
                 key={tx.id}
-                className="flex items-center justify-between p-4 bg-secondary/50 rounded-lg hover:bg-secondary/80 transition-all"
+                className="flex items-center justify-between p-3 md:p-4 bg-secondary/50 rounded-lg hover:bg-secondary/80 transition-all gap-2"
               >
-                <div className="flex items-center space-x-4">
-                  <div className="text-2xl">{tx.icon}</div>
-                  <div>
-                    <p className="font-medium">{tx.desc}</p>
+                <div className="flex items-center gap-2 md:gap-4 min-w-0">
+                  <div className="text-lg md:text-2xl flex-shrink-0">{tx.icon}</div>
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm md:text-base truncate">{tx.desc}</p>
                     <p className="text-xs text-muted-foreground">{tx.category}</p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right flex-shrink-0">
                   <p
-                    className={`font-semibold ${
+                    className={`font-semibold text-sm md:text-base ${
                       tx.amount > 0 ? 'text-green-600' : 'text-foreground'
                     }`}
                   >
