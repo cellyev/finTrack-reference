@@ -19,13 +19,13 @@ export default function BudgetPage() {
   const percentageSpent = (totalSpent / totalBudget) * 100
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6 lg:space-y-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold">Budget</h1>
-          <p className="text-muted-foreground mt-1">Manage your spending across categories</p>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">Budget</h1>
+          <p className="text-xs md:text-sm text-muted-foreground mt-1">Manage your spending across categories</p>
         </div>
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
+        <Button className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
           <PlusCircle className="w-4 h-4" />
           New Budget
         </Button>
@@ -34,33 +34,33 @@ export default function BudgetPage() {
       {/* Overall Budget Summary */}
       <Card className="bg-gradient-to-br from-primary/10 to-transparent border-primary/30">
         <CardHeader>
-          <CardTitle>Monthly Budget Overview</CardTitle>
+          <CardTitle className="text-lg md:text-xl">Monthly Budget Overview</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <CardContent className="space-y-4 md:space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Total Spent</p>
-              <p className="text-3xl font-bold">${totalSpent}</p>
+              <p className="text-xs md:text-sm text-muted-foreground mb-1">Total Spent</p>
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold">${totalSpent}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Total Budget</p>
-              <p className="text-3xl font-bold text-primary">${totalBudget}</p>
+              <p className="text-xs md:text-sm text-muted-foreground mb-1">Total Budget</p>
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-primary">${totalBudget}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Remaining</p>
-              <p className={`text-3xl font-bold ${totalBudget - totalSpent > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              <p className="text-xs md:text-sm text-muted-foreground mb-1">Remaining</p>
+              <p className={`text-xl md:text-2xl lg:text-3xl font-bold ${totalBudget - totalSpent > 0 ? 'text-green-600' : 'text-red-600'}`}>
                 ${Math.abs(totalBudget - totalSpent)}
               </p>
             </div>
           </div>
           <div className="space-y-2">
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-xs md:text-sm">
               <span>{Math.round(percentageSpent)}% spent</span>
               <span className="text-muted-foreground">{Math.round(100 - percentageSpent)}% remaining</span>
             </div>
             <Progress 
               value={percentageSpent} 
-              className="h-3"
+              className="h-2 md:h-3"
             />
           </div>
         </CardContent>
@@ -68,33 +68,33 @@ export default function BudgetPage() {
 
       {/* Budget Categories */}
       <div>
-        <h2 className="text-2xl font-bold mb-4">Category Breakdown</h2>
-        <div className="space-y-4">
+        <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Category Breakdown</h2>
+        <div className="space-y-3 md:space-y-4">
           {budgets.map((budget) => {
             const percentage = (budget.spent / budget.budget) * 100
             const isOverBudget = budget.spent > budget.budget
 
             return (
               <Card key={budget.category} className="hover:shadow-md transition-shadow">
-                <CardContent className="pt-6">
-                  <div className="space-y-4">
+                <CardContent className="pt-4 md:pt-6">
+                  <div className="space-y-3 md:space-y-4">
                     {/* Header */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <span className="text-3xl">{budget.icon}</span>
-                        <div>
-                          <p className="font-semibold text-lg">{budget.category}</p>
-                          <p className="text-sm text-muted-foreground">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                        <span className="text-lg md:text-3xl flex-shrink-0">{budget.icon}</span>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-sm md:text-lg">{budget.category}</p>
+                          <p className="text-xs md:text-sm text-muted-foreground">
                             ${budget.spent} of ${budget.budget}
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <p className={`text-2xl font-bold min-w-[60px] text-right ${isOverBudget ? 'text-red-600' : 'text-primary'}`}>
+                      <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
+                        <p className={`text-lg md:text-2xl font-bold min-w-[50px] text-right ${isOverBudget ? 'text-red-600' : 'text-primary'}`}>
                           {Math.round(percentage)}%
                         </p>
-                        <Button variant="ghost" size="sm">
-                          <MoreVertical className="w-4 h-4" />
+                        <Button variant="ghost" size="sm" className="p-1 md:p-2">
+                          <MoreVertical className="w-3 md:w-4 h-3 md:h-4" />
                         </Button>
                       </div>
                     </div>
@@ -102,11 +102,11 @@ export default function BudgetPage() {
                     {/* Progress Bar */}
                     <Progress
                       value={Math.min(percentage, 100)}
-                      className="h-3"
+                      className="h-2 md:h-3"
                     />
 
                     {/* Footer with status */}
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs md:text-sm">
                       {isOverBudget ? (
                         <p className="text-red-600 font-medium">
                           Over budget by ${budget.spent - budget.budget}
@@ -116,7 +116,7 @@ export default function BudgetPage() {
                           ${budget.budget - budget.spent} available
                         </p>
                       )}
-                      <Button variant="outline" size="sm" className="gap-2">
+                      <Button variant="outline" size="sm" className="gap-1 md:gap-2 text-xs md:text-sm">
                         <Edit className="w-3 h-3" />
                         Edit
                       </Button>
@@ -132,20 +132,20 @@ export default function BudgetPage() {
       {/* Budget Tips */}
       <Card className="bg-accent/5 border-accent/20">
         <CardHeader>
-          <CardTitle className="text-base">Budget Tips</CardTitle>
+          <CardTitle className="text-base md:text-lg">Budget Tips</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-2 md:space-y-3">
           <div className="flex gap-3">
-            <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-            <p className="text-sm">Set realistic budgets based on your average spending</p>
+            <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" />
+            <p className="text-xs md:text-sm">Set realistic budgets based on your average spending</p>
           </div>
           <div className="flex gap-3">
-            <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-            <p className="text-sm">Review your budgets weekly to stay on track</p>
+            <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" />
+            <p className="text-xs md:text-sm">Review your budgets weekly to stay on track</p>
           </div>
           <div className="flex gap-3">
-            <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-            <p className="text-sm">Adjust categories if your spending patterns change</p>
+            <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" />
+            <p className="text-xs md:text-sm">Adjust categories if your spending patterns change</p>
           </div>
         </CardContent>
       </Card>

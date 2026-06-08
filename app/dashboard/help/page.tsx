@@ -64,39 +64,39 @@ export default function HelpCenterPage() {
   })
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
+    <div className="space-y-4 md:space-y-6 lg:space-y-8 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="text-center space-y-3">
-        <h1 className="text-5xl font-bold">Help Center</h1>
-        <p className="text-lg text-muted-foreground">Find answers to common questions and get support</p>
+      <div className="text-center space-y-2 md:space-y-3">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">Help Center</h1>
+        <p className="text-sm md:text-base lg:text-lg text-muted-foreground">Find answers to common questions and get support</p>
       </div>
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+        <Search className="absolute left-3 md:left-4 top-1/2 transform -translate-y-1/2 w-4 md:w-5 h-4 md:h-5 text-muted-foreground" />
         <Input
           type="text"
           placeholder="Search help articles..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-12 py-6 text-base border-primary/20"
+          className="pl-9 md:pl-12 py-4 md:py-6 text-sm md:text-base border-primary/20"
         />
       </div>
 
       {/* Quick Links */}
       <div>
-        <h2 className="text-lg font-bold mb-4">Browse by category</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <h2 className="text-base md:text-lg font-bold mb-2 md:mb-4">Browse by category</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-3">
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`p-4 rounded-lg border-2 transition-all text-center ${
+            className={`p-2 md:p-4 rounded-lg border-2 transition-all text-center ${
               selectedCategory === 'all'
                 ? 'border-primary bg-primary/10'
                 : 'border-border bg-background hover:bg-secondary'
             }`}
           >
-            <p className="text-2xl mb-2">📚</p>
-            <p className="text-sm font-medium">All</p>
+            <p className="text-lg md:text-2xl mb-1">📚</p>
+            <p className="text-xs md:text-sm font-medium">All</p>
           </button>
           {categories.map(cat => {
             const Icon = cat.icon
@@ -104,14 +104,14 @@ export default function HelpCenterPage() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.label)}
-                className={`p-4 rounded-lg border-2 transition-all text-center ${
+                className={`p-2 md:p-4 rounded-lg border-2 transition-all text-center ${
                   selectedCategory === cat.label
                     ? 'border-primary bg-primary/10'
                     : 'border-border bg-background hover:bg-secondary'
                 }`}
               >
-                <Icon className="w-6 h-6 mx-auto mb-2" />
-                <p className="text-sm font-medium">{cat.label}</p>
+                <Icon className="w-4 md:w-6 h-4 md:h-6 mx-auto mb-1" />
+                <p className="text-xs md:text-sm font-medium line-clamp-1">{cat.label}</p>
               </button>
             )
           })}
@@ -120,31 +120,31 @@ export default function HelpCenterPage() {
 
       {/* FAQs */}
       <div>
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="text-lg md:text-2xl font-bold mb-2 md:mb-4">
           Frequently Asked Questions {searchTerm && `(${filteredFaqs.length})`}
         </h2>
 
         {filteredFaqs.length === 0 ? (
-          <Card className="text-center py-12">
-            <div className="text-4xl mb-3">🔍</div>
-            <p className="text-muted-foreground">No articles match your search</p>
-            <p className="text-sm text-muted-foreground mt-2">Try different keywords or browse categories</p>
+          <Card className="text-center py-8 md:py-12">
+            <div className="text-3xl md:text-4xl mb-2 md:mb-3">🔍</div>
+            <p className="text-xs md:text-sm text-muted-foreground">No articles match your search</p>
+            <p className="text-xs text-muted-foreground mt-2">Try different keywords or browse categories</p>
           </Card>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2 md:space-y-3">
             {filteredFaqs.map((faq, index) => (
               <Card key={index} className="hover:shadow-md transition-shadow">
-                <CardContent className="pt-6">
+                <CardContent className="pt-4 md:pt-6">
                   <details className="group">
-                    <summary className="font-semibold cursor-pointer flex items-center justify-between hover:text-primary transition-colors">
-                      <span>{faq.question}</span>
-                      <span className="group-open:rotate-180 transition-transform text-primary">
+                    <summary className="font-semibold cursor-pointer flex items-center justify-between hover:text-primary transition-colors text-sm md:text-base">
+                      <span className="text-left">{faq.question}</span>
+                      <span className="group-open:rotate-180 transition-transform text-primary flex-shrink-0 ml-2">
                         ▼
                       </span>
                     </summary>
-                    <div className="mt-4 pt-4 border-t space-y-3">
-                      <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
-                      <div className="inline-block px-3 py-1 bg-secondary rounded-full text-xs font-medium text-muted-foreground">
+                    <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t space-y-2 md:space-y-3">
+                      <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+                      <div className="inline-block px-2 md:px-3 py-1 bg-secondary rounded-full text-xs font-medium text-muted-foreground">
                         {faq.category}
                       </div>
                     </div>
@@ -159,42 +159,42 @@ export default function HelpCenterPage() {
       {/* Support Section */}
       <Card className="bg-gradient-to-br from-primary/10 to-accent/10 border-primary/30">
         <CardHeader>
-          <CardTitle className="text-2xl">Didn&apos;t find your answer?</CardTitle>
-          <p className="text-muted-foreground mt-2">Our support team is here to help you 24/7</p>
+          <CardTitle className="text-lg md:text-2xl">Didn&apos;t find your answer?</CardTitle>
+          <p className="text-xs md:text-sm text-muted-foreground mt-2">Our support team is here to help you 24/7</p>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-4">
             <Card className="bg-background border-primary/20 hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6 text-center">
-                <Mail className="w-8 h-8 mx-auto mb-3 text-primary" />
-                <p className="font-semibold mb-2">Email Support</p>
-                <p className="text-sm text-muted-foreground mb-4">support@fintrack.com</p>
-                <Button variant="outline" className="w-full gap-2">
-                  <Mail className="w-4 h-4" />
+              <CardContent className="pt-4 md:pt-6 text-center">
+                <Mail className="w-6 md:w-8 h-6 md:h-8 mx-auto mb-2 md:mb-3 text-primary" />
+                <p className="font-semibold text-sm md:text-base mb-1 md:mb-2">Email Support</p>
+                <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">support@fintrack.com</p>
+                <Button variant="outline" className="w-full gap-2 text-xs md:text-sm">
+                  <Mail className="w-3 md:w-4 h-3 md:h-4" />
                   Send Email
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="bg-background border-primary/20 hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6 text-center">
-                <MessageSquare className="w-8 h-8 mx-auto mb-3 text-accent" />
-                <p className="font-semibold mb-2">Live Chat</p>
-                <p className="text-sm text-muted-foreground mb-4">Chat with our team</p>
-                <Button variant="outline" className="w-full gap-2">
-                  <MessageSquare className="w-4 h-4" />
+              <CardContent className="pt-4 md:pt-6 text-center">
+                <MessageSquare className="w-6 md:w-8 h-6 md:h-8 mx-auto mb-2 md:mb-3 text-accent" />
+                <p className="font-semibold text-sm md:text-base mb-1 md:mb-2">Live Chat</p>
+                <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">Chat with our team</p>
+                <Button variant="outline" className="w-full gap-2 text-xs md:text-sm">
+                  <MessageSquare className="w-3 md:w-4 h-3 md:h-4" />
                   Start Chat
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="bg-background border-primary/20 hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6 text-center">
-                <Phone className="w-8 h-8 mx-auto mb-3 text-green-600" />
-                <p className="font-semibold mb-2">Call Us</p>
-                <p className="text-sm text-muted-foreground mb-4">1-800-FINTRACK</p>
-                <Button variant="outline" className="w-full gap-2">
-                  <Phone className="w-4 h-4" />
+              <CardContent className="pt-4 md:pt-6 text-center">
+                <Phone className="w-6 md:w-8 h-6 md:h-8 mx-auto mb-2 md:mb-3 text-green-600" />
+                <p className="font-semibold text-sm md:text-base mb-1 md:mb-2">Call Us</p>
+                <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">1-800-FINTRACK</p>
+                <Button variant="outline" className="w-full gap-2 text-xs md:text-sm">
+                  <Phone className="w-3 md:w-4 h-3 md:h-4" />
                   Call Now
                 </Button>
               </CardContent>
@@ -206,14 +206,14 @@ export default function HelpCenterPage() {
       {/* Community */}
       <Card>
         <CardHeader>
-          <CardTitle>Join Our Community</CardTitle>
+          <CardTitle className="text-lg md:text-xl">Join Our Community</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">
+          <p className="text-xs md:text-sm text-muted-foreground mb-4">
             Connect with other students, share tips, and learn best practices for managing your finances.
           </p>
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
-            <MessageSquare className="w-4 h-4" />
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2 text-xs md:text-sm">
+            <MessageSquare className="w-3 md:w-4 h-3 md:h-4" />
             Join Community Forum
           </Button>
         </CardContent>
